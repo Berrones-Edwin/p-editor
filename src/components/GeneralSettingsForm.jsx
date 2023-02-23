@@ -15,7 +15,6 @@ import {
 } from '@chakra-ui/react'
 import useGeneralSettings from '../hooks/useGeneralSettings'
 import { SIZES } from '../constants/sizes'
-import { useImageProvider } from '../hooks/useImageProvider'
 const nameInputs = {
   bgColor: 0,
   headerColor: 1,
@@ -27,7 +26,6 @@ const nameInputs = {
 const GeneralSettingsForm = () => {
   const { state, dispatch } = useGeneralSettings()
 
-  const { setImage } = useImageProvider()
   const handleInputChange = (e) => {
     dispatch({
       type: nameInputs[e.target.name],
@@ -35,9 +33,9 @@ const GeneralSettingsForm = () => {
     })
   }
   const handleInputChangeImage = (e) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setImage(e.target.files[0])
-    }
+    // if (e.target.files && e.target.files.length > 0) {
+    //   setUser(e.target.files[0])
+    // }
   }
   return (
         <Stack minH={'100vh'} padding={3}>
