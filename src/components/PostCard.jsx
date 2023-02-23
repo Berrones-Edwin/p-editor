@@ -2,15 +2,16 @@ import {
   Stack,
   Editable,
   EditableInput,
-  EditablePreview
+  EditablePreview,
+  Image, Text
 } from '@chakra-ui/react'
 import React from 'react'
 import useGeneralSettings from '../hooks/useGeneralSettings'
-import { useImageProvider } from '../hooks/useImageProvider'
+import { useUserProvider } from '../hooks/useUserProvider'
 
 const PostCard = () => {
   const { state } = useGeneralSettings()
-  const { image } = useImageProvider()
+  const { user } = useUserProvider()
   return (
     <Stack
       borderRadius="md"
@@ -18,6 +19,7 @@ const PostCard = () => {
       minW={'630px'}
       bgColor={state.bgColor}
       padding={'3rem'}
+      position='relative'
 
     >
       <Editable
@@ -44,14 +46,24 @@ const PostCard = () => {
         <EditablePreview />
         <EditableInput />
       </Editable>
-      {
+      {/* {
         image
           ? (<figure className="lofi">
 
           <img src={URL.createObjectURL(image)} alt={image.lastModified} />
         </figure>)
           : null
-      }
+      } */}
+
+      <Stack bottom={'10'} right='10' position={'absolute'}>
+        {
+          user.photo ? <Image src={user.photo} alt={user.username} /> : null
+        }
+        {
+          user.username ? <Text>{user.username}</Text> : null
+        }
+
+      </Stack>
 
     </Stack>
   )
