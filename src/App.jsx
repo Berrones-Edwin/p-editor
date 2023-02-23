@@ -1,11 +1,22 @@
-import { useState } from 'react'
+import SidebarWithHeader from './components/Sidebar'
+import { Stack } from '@chakra-ui/react'
+import PostCard from './components/PostCard'
 
 function App () {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <h2>Hello world</h2>
+      <SidebarWithHeader>
+      <Stack
+        as="main"
+        minH={'100vh'}
+        direction={'row'}
+        justifyContent={'center'}
+        alignItems={'center'}
+
+      >
+        <PostCard />
+      </Stack>
+    </SidebarWithHeader>
     </>
   )
 }
