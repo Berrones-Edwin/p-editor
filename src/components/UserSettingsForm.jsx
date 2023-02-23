@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Button,
   Stack,
@@ -8,26 +8,52 @@ import {
 } from '@chakra-ui/react'
 import { useUserProvider } from '../hooks/useUserProvider'
 import { uploadService } from '../services/uploadImage'
+import { Cloudinary } from '@cloudinary/url-gen'
+import { thumbnail } from '@cloudinary/url-gen/actions/resize'
+import { byRadius } from '@cloudinary/url-gen/actions/roundCorners'
+import { focusOn } from '@cloudinary/url-gen/qualifiers/gravity'
+import { FocusOn } from '@cloudinary/url-gen/qualifiers/focusOn'
+
+const cloudinary = new Cloudinary({
+  cloud: {
+    cloudName: 'dwa0boye6'
+  },
+  url: {
+    secure: true
+  }
+})
 
 const UserSettingsForm = () => {
-  const { user, setUser } = useUserProvider()
+  const { setUser } = useUserProvider()
+  const [form, setForm] = useState({
+    username: '', photo: ''
+  })
 
   const handleInputChange = (e) => {
-    setUser({
-      ...user,
+    setForm({
+      ...form,
       [e.target.name]: e.target.value
     })
 
     if (e.target.files && e.target.files.length > 0) {
-      setUser({ ...user, photo: e.target.files[0] })
+      setForm({ ...form, photo: e.target.files[0] })
     }
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log({ user })
-    uploadService({ data: user.photo }).then((data) => {
-      console.log(data)
+
+    uploadService({ data: form.photo }).then((data) => {
+      if (data) {
+        const avatar = cloudinary.image(data.public_id)
+          .resize(thumbnail().width(100).height(100).gravity(focusOn(FocusOn.face())))
+          .roundCorners(byRadius(80))
+        const url = avatar.toURL()
+        setUser({
+          username: form.username,
+          photo: url
+        })
+      }
     })
   }
   return (
@@ -39,8 +65,10 @@ const UserSettingsForm = () => {
         <Input
           type="text"
           name='username'
-          value={user.username}
+          value={form.username}
           onChange={handleInputChange}
+          autoComplete="off"
+          placeholder='@myusername'
         />
       </FormControl>
       <FormControl id="Image">
