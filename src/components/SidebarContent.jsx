@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Box,
   CloseButton,
@@ -9,12 +10,12 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon
+
 } from '@chakra-ui/react'
 import useGeneralSettings from '../hooks/useGeneralSettings'
 import { SIZES } from '../constants/sizes'
-import { useImageProvider } from '../hooks/useImageProvider'
-import React from 'react'
 import GeneralSettingsForm from './GeneralSettingsForm'
+import UserSettingsForm from './userSettingsForm'
 
 const SidebarContent = ({ onClose, ...rest }) => {
   return (
@@ -36,6 +37,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
 
       <Accordion defaultIndex={[0]} allowMultiple>
 
+        {/* General Settings */}
         <AccordionItem>
           <h2>
             <AccordionButton>
@@ -45,11 +47,26 @@ const SidebarContent = ({ onClose, ...rest }) => {
               <AccordionIcon />
             </AccordionButton>
           </h2>
+
           <AccordionPanel pb={4}>
             <GeneralSettingsForm />
           </AccordionPanel>
         </AccordionItem>
-        {/* General Settings */}
+        {/* End General Settings */}
+
+        <AccordionItem>
+          <h2>
+            <AccordionButton>
+              <Box as="span" flex='1' textAlign='left'>
+                User Settings
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+          </h2>
+          <AccordionPanel pb={4}>
+            <UserSettingsForm />
+          </AccordionPanel>
+        </AccordionItem>
 
       </Accordion>
     </Box>
