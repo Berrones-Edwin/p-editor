@@ -3,19 +3,22 @@ import {
   Editable,
   EditableInput,
   EditablePreview,
-  Image, Text
+  Image, Text, EditableTextarea
 } from '@chakra-ui/react'
 import React from 'react'
 import useGeneralSettings from '../hooks/useGeneralSettings'
 import { useUserProvider } from '../hooks/useUserProvider'
 
-const PostCard = () => {
+const PostCard = ({ postCard }) => {
   const { state } = useGeneralSettings()
   const { user } = useUserProvider()
   return (
     <Stack
+      ref={postCard}
       borderRadius="md"
       minH={'630px'}
+      maxH={'630px'}
+      maxW={'630px'}
       minW={'630px'}
       bgColor={state.bgColor}
       padding={'3rem'}
@@ -40,8 +43,11 @@ const PostCard = () => {
         textAlign="center"
         fontSize={state.sizeSubtitlte}
         color={state.bgColorSubtitle}
-        as="p"
         defaultValue="Enter your subtitle"
+        justifyContent="center"
+        alignItems="center"
+        display="flex"
+        maxW={'100%'}
       >
         <EditablePreview />
         <EditableInput />
