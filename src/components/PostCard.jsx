@@ -52,14 +52,14 @@ const PostCard = ({ postCard }) => {
         <EditablePreview />
         <EditableInput />
       </Editable>
-      {/* {
-        image
-          ? (<figure className="lofi">
+      {
+        user.image.src
+          ? (<figure className={user.image.filter}>
 
-          <img src={URL.createObjectURL(image)} alt={image.lastModified} />
-        </figure>)
+            <Image src={URL.createObjectURL(user.image.src)} width="534px" height={'300px'} alt={user.image.src.lastModified} />
+          </figure>)
           : null
-      } */}
+      }
 
       <Stack bottom={'10'} right='10' position={'absolute'}>
         {

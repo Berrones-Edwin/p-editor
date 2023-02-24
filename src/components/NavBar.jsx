@@ -35,7 +35,6 @@ export default function NavBar ({ postCard }) {
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
         <Flex w={'100%'} h={16} alignItems={'center'} justifyContent={'space-between'}>
-
           <Flex w={'100%'} alignItems={'center'}>
             <Stack w={'100%'} justifyContent='flex-end' direction={'row'} spacing={7}>
               <Button onClick={toggleColorMode}>

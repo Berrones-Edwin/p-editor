@@ -5,7 +5,11 @@ export const UserContext = createContext('')
 const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState({
     username: '',
-    photo: ''
+    photo: '',
+    image: {
+      src: '',
+      filter: ''
+    }
   })
 
   return (
