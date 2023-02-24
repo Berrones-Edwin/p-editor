@@ -35,7 +35,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
 
-      <Accordion defaultIndex={[0]} allowMultiple>
+      <Accordion allowMultiple>
 
         {/* General Settings */}
         <AccordionItem>
