@@ -46,11 +46,15 @@ const GeneralSettingsForm = () => {
   }
   const handleInputChangeImage = (e) => {
     if (e.target.files && e.target.files.length > 0) {
-      setUser({
-        image: {
-          src: e.target.files[0]
-        }
-      })
+      const fileReader = new FileReader()
+      fileReader.readAsDataURL(e.target.files[0])
+      fileReader.onloadend = function () {
+        setUser({
+          image: {
+            src: fileReader.result
+          }
+        })
+      }
     }
   }
   return (

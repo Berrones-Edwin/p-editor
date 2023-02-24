@@ -56,7 +56,7 @@ const PostCard = ({ postCard }) => {
         user.image.src
           ? (<figure className={user.image.filter}>
 
-            <Image src={URL.createObjectURL(user.image.src)} width="534px" height={'300px'} alt={user.image.src.lastModified} />
+            <Image src={user.image.src} width="534px" height={'300px'} alt={user.image.src} />
           </figure>)
           : null
       }

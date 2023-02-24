@@ -21,7 +21,7 @@ const ImageFilter = ({ filter, src, alt, name, setFilter }) => {
     <>
 
         <Stack onClick={() => setFilter({ filter })} cursor={'pointer'} display={'flex'} justifyContent='center' alignItems={'center'} flexDir='column' className={filter}>
-            <Avatar src={URL.createObjectURL(src)} size='lg' alt={alt} />
+            <Avatar src={src} size='lg' alt={filter} />
             <p>{name}</p>
         </Stack>
     </>
