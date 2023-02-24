@@ -34,7 +34,7 @@ const GeneralSettingsForm = () => {
   const { state, dispatch } = useGeneralSettings()
   const [allowImage, setAllowImage] = useState(false)
   const [allowCodeEditor, setAllowCodeEditor] = useState(false)
-  const { setUser } = useUserProvider()
+  const { user, setUser } = useUserProvider()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnSettingsImage = useRef()
 
@@ -50,6 +50,7 @@ const GeneralSettingsForm = () => {
       fileReader.readAsDataURL(e.target.files[0])
       fileReader.onloadend = function () {
         setUser({
+          ...user,
           image: {
             src: fileReader.result
           }

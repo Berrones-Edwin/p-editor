@@ -12,6 +12,7 @@ import { useUserProvider } from '../hooks/useUserProvider'
 const PostCard = ({ postCard }) => {
   const { state } = useGeneralSettings()
   const { user } = useUserProvider()
+
   return (
     <Stack
       ref={postCard}
@@ -56,12 +57,13 @@ const PostCard = ({ postCard }) => {
         user.image.src
           ? (<figure className={user.image.filter}>
 
-            <Image src={user.image.src} width="534px" height={'300px'} alt={user.image.src} />
+            <Image
+              src={user.image.src} width="534px" height={'300px'} alt={user.image.src} />
           </figure>)
           : null
       }
 
-      <Stack bottom={'10'} right='10' position={'absolute'}>
+      <Stack bottom={'10'} right='10' zIndex={'10'} position={'absolute'}>
         {
           user.photo ? <Image src={user.photo} alt={user.username} /> : null
         }
