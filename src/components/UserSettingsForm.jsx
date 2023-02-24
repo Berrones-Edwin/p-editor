@@ -43,47 +43,54 @@ const UserSettingsForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    uploadService({ data: form.photo }).then((data) => {
-      if (data) {
-        const avatar = cloudinary.image(data.public_id)
-          .resize(thumbnail().width(100).height(100).gravity(focusOn(FocusOn.face())))
-          .roundCorners(byRadius(80))
-        const url = avatar.toURL()
-        setUser({
-          username: form.username,
-          photo: url
-        })
-      }
+    if (form.username === '' && form.photo === '') return
+    if (form.photo) {
+      uploadService({ data: form.photo }).then((data) => {
+        if (data) {
+          const avatar = cloudinary.image(data.public_id)
+            .resize(thumbnail().width(100).height(100).gravity(focusOn(FocusOn.face())))
+            .roundCorners(byRadius(80))
+          const url = avatar.toURL()
+          setUser({
+            username: form.username,
+            photo: url
+          })
+        }
+      })
+    }
+
+    setUser({
+      username: form.username
     })
   }
   return (
     <Stack minH={'100vh'} padding={3}>
-    <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
 
-      <FormControl id="username">
-        <FormLabel>Username</FormLabel>
-        <Input
-          type="text"
-          name='username'
-          value={form.username}
-          onChange={handleInputChange}
-          autoComplete="off"
-          placeholder='@myusername'
-        />
-      </FormControl>
-      <FormControl id="Image">
+        <FormControl id="username">
+          <FormLabel>Username</FormLabel>
+          <Input
+            type="text"
+            name='username'
+            value={form.username}
+            onChange={handleInputChange}
+            autoComplete="off"
+            placeholder='@myusername'
+          />
+        </FormControl>
+        <FormControl id="Image">
           <FormLabel>Profile Photo</FormLabel>
           <Input
-              type="file"
-              name="photo"
-              onChange={handleInputChange}
+            type="file"
+            name="photo"
+            onChange={handleInputChange}
           />
-      </FormControl>
-      <FormControl id="btnSend">
-      <Button type='submit'>Save</Button>
-      </FormControl>
-    </form>
-  </Stack>
+        </FormControl>
+        <FormControl id="btnSend">
+          <Button type='submit'>Save</Button>
+        </FormControl>
+      </form>
+    </Stack>
   )
 }
 
