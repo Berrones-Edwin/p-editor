@@ -15,19 +15,31 @@ import {
   Switch,
   VisuallyHidden,
   Icon,
-  useDisclosure
+  useDisclosure,
+  ButtonGroup,
+  IconButton
 
 } from '@chakra-ui/react'
 import useGeneralSettings from '../hooks/useGeneralSettings'
 import { SIZES } from '../constants/sizes'
 import { useUserProvider } from '../hooks/useUserProvider'
 import SettingsImages from './SettingsImages'
+import {
+  FaAlignCenter, FaAlignJustify, FaAlignLeft, FaAlignRight, FaBold,
+  FaItalic,
+  FaUnderline
+} from 'react-icons/fa'
+
 const nameInputs = {
   bgColor: 0,
   headerColor: 1,
   subtitleColor: 2,
   sizeHeader: 3,
-  sizeSubtitlte: 4
+  sizeSubtitlte: 4,
+  alignHeader: 5,
+  alignSubtitle: 6,
+  styleHeader: 7,
+  styleSubtitle: 8
 }
 
 const GeneralSettingsForm = () => {
@@ -58,34 +70,67 @@ const GeneralSettingsForm = () => {
       }
     }
   }
+
+  const handleAlign = (value) => {
+    console.log({
+      type: nameInputs.alignHeader,
+      payload: value
+    })
+    dispatch({
+      type: nameInputs.alignHeader,
+      payload: value
+    })
+  }
+  const handleType = (value) => {
+    console.log({
+      type: nameInputs.styleHeader,
+      payload: value
+    })
+    dispatch({
+      type: nameInputs.styleHeader,
+      payload: value
+    })
+  }
   return (
         <>
             <Stack minH={'100vh'} padding={3}>
                 <form onSubmit={(e) => e.preventDefault()}>
 
-                    <FormControl mb={'1rem'} id="bgColor">
-                        <FormLabel>Background Color</FormLabel>
+                    <FormControl mb={'1rem'} id="bgColor" display={'flex'} justifyContent='space-around' alignItems={'center'}>
+                        <FormLabel>Bg Color</FormLabel>
                         <Input
+                            width={'50px'}
+
                             type="color"
                             name="bgColor"
                             value={state.bgColor}
                             onChange={handleInputChange}
+                            border='none'
+                            padding={'0'}
+                            rounded='full'
                         />
 
                     </FormControl>
+                    <hr />
 
-                    <FormLabel>Header Color</FormLabel>
-                    <FormControl mb={'1rem'} display={'flex'} id="bgColor">
+                    <FormLabel mt={'1rem'} textAlign='center'>Headline</FormLabel>
+                    <FormControl mb={'1rem'} display={'flex'} justifyContent='space-around' alignItems={'center'} id="bgColor">
+
                         <Input
                             type="color"
                             name="headerColor"
                             value={state.bgColorHeader}
                             onChange={handleInputChange}
+                            border='none'
+                            padding={'0'}
+                            rounded='full'
+                            width={'50px'}
                         />
                         <Select
-                            placeholder="Select option"
+                            placeholder="Size"
                             name="sizeHeader"
                             onChange={handleInputChange}
+                            width='80px'
                         >
                             {SIZES.map((s) => (
                                 <option
@@ -97,20 +142,47 @@ const GeneralSettingsForm = () => {
                                 </option>
                             ))}
                         </Select>
+
+                    </FormControl>
+                    <FormControl mb='1rem' display={'flex'} justifyContent='center'>
+                        <ButtonGroup>
+                            <IconButton icon={<FaAlignLeft />} onClick={() => handleAlign('left')} size={'xs'} />
+                            <IconButton icon={<FaAlignCenter />} onClick={() => handleAlign('center')} size={'xs'} />
+                            <IconButton icon={<FaAlignRight />} onClick={() => handleAlign('right')} size={'xs'} />
+
+                        </ButtonGroup>
+                    </FormControl>
+                    <FormControl mb='1rem' display={'flex'} justifyContent='center'>
+                        <ButtonGroup spacing={2}>
+                            <IconButton onClick={() => handleType('bold')} icon={<FaBold/>} size={'xs'} />
+                            <IconButton onClick={() => handleType('italic')} icon={<FaItalic/>} size={'xs'} />
+                            <IconButton onClick={() => handleType('underline')} icon={<FaUnderline/>} size={'xs'} />
+                        </ButtonGroup>
                     </FormControl>
 
-                    <FormLabel>Subtitle Color</FormLabel>
-                    <FormControl mb={'1rem'} display={'flex'} id="bgColor">
+                    <hr />
+
+                    <FormLabel mt='1rem' mb='1rem'>Body Text</FormLabel>
+                    <FormControl mb={'1rem'} display={'flex'} justifyContent='space-around' alignItems={'center'} id="bgColor">
+
                         <Input
                             type="color"
                             name="subtitleColor"
+
                             value={state.bgColorSubtitle}
                             onChange={handleInputChange}
+                            border='none'
+                            padding={'0'}
+                            rounded='full'
+                            width={'50px'}
+
                         />
+
                         <Select
-                            placeholder="Select option"
+                            placeholder="Size"
                             name="sizeSubtitlte"
                             onChange={handleInputChange}
+                            width='80px'
                         >
                             {SIZES.map((s) => (
                                 <option
@@ -123,8 +195,24 @@ const GeneralSettingsForm = () => {
                             ))}
                         </Select>
                     </FormControl>
+                    <FormControl mb='1rem' display={'flex'} justifyContent='center'>
+                        <ButtonGroup>
+                            <Button size={'xs'}><FaAlignLeft /></Button>
+                            <Button size={'xs'}><FaAlignCenter /></Button>
+                            <Button size={'xs'}><FaAlignRight /></Button>
+                        </ButtonGroup>
+                    </FormControl>
+                    <FormControl mb='1rem' display={'flex'} justifyContent='center'>
+                        <ButtonGroup spacing={2}>
+                            <Button size={'xs'}><FaBold /></Button>
+                            <Button size={'xs'}><FaItalic /></Button>
+                            <Button size={'xs'}><FaUnderline /></Button>
+                        </ButtonGroup>
+                    </FormControl>
 
-                    <FormControl mb={'1rem'} display='flex' alignItems='center'>
+                    <hr />
+
+                    <FormControl mt={'1rem'} mb={'1rem'} display='flex' alignItems='center'>
                         <FormLabel htmlFor='allow-image' mb='0' >
                             Add Image
                         </FormLabel>

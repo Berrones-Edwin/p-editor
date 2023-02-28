@@ -5,15 +5,23 @@ import {
   EditablePreview,
   Image, Text, EditableTextarea
 } from '@chakra-ui/react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import useGeneralSettings from '../hooks/useGeneralSettings'
 import { useUserProvider } from '../hooks/useUserProvider'
 
 const PostCard = ({ postCard }) => {
   const { state } = useGeneralSettings()
   const { user } = useUserProvider()
+  const [style, setStyle] = useState(null)
+
+  useEffect(() => {
+    if (state.styleHeader === 'italic') setStyle("fontStyle :'italic'")
+    else if (state.styleHeader === 'bold') setStyle("fontWeight:'bold'")
+    else if (state.styleHeader === 'underline') setStyle("textDecoration:'underline'")
+  }, [state.styleHeader, setStyle])
 
   return (
+
     <Stack
       ref={postCard}
       borderRadius="md"
@@ -26,16 +34,16 @@ const PostCard = ({ postCard }) => {
       position='relative'
 
     >
+
       <Editable
-        justifyContent="center"
-        alignItems="center"
-        display="flex"
-        textAlign="center"
-        fontWeight="bold"
+
+        textAlign={state.alignHeader}
         fontSize={state.sizeHeader}
         color={state.bgColorHeader}
         as="h1"
         defaultValue="Enter your header"
+        style={{ style }}
+
       >
         <EditablePreview />
         <EditableInput />

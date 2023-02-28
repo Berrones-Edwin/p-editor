@@ -3,7 +3,11 @@ export const ActionType = {
   BGCOLORHEADER: 1,
   BGCOLORSUBTITLE: 2,
   SIZEHEADER: 3,
-  SIZESUBTITLTE: 4
+  SIZESUBTITLTE: 4,
+  ALIGNHEADER: 5,
+  ALIGNSUBTITLE: 6,
+  STYLEHEADER: 7,
+  STYLESUBTITLE: 8
 }
 
 export const ChangeBgColor = {

@@ -3,5 +3,10 @@ export const initialState = {
   bgColorHeader: '#FFFFFF',
   bgColorSubtitle: '#FFFFFF',
   sizeHeader: '4xl',
-  sizeSubtitlte: 'lg'
+  sizeSubtitlte: 'lg',
+  alignHeader: 'center',
+  alignSubtitle: 'center',
+  styleHeader: '',
+  styleSubtitle: ''
+
 }
