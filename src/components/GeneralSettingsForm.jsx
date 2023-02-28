@@ -24,11 +24,8 @@ import useGeneralSettings from '../hooks/useGeneralSettings'
 import { SIZES } from '../constants/sizes'
 import { useUserProvider } from '../hooks/useUserProvider'
 import SettingsImages from './SettingsImages'
-import {
-  FaAlignCenter, FaAlignJustify, FaAlignLeft, FaAlignRight, FaBold,
-  FaItalic,
-  FaUnderline
-} from 'react-icons/fa'
+import MoreSettingsText from './MoreSettingsText'
+import SelectSizesFont from './SelectSizesFont'
 
 const nameInputs = {
   bgColor: 0,
@@ -71,16 +68,6 @@ const GeneralSettingsForm = () => {
     }
   }
 
-  const handleAlign = (value) => {
-    console.log({
-      type: nameInputs.alignHeader,
-      payload: value
-    })
-    dispatch({
-      type: nameInputs.alignHeader,
-      payload: value
-    })
-  }
   const handleType = (value) => {
     console.log({
       type: nameInputs.styleHeader,
@@ -92,148 +79,107 @@ const GeneralSettingsForm = () => {
     })
   }
   return (
-        <>
-            <Stack minH={'100vh'} padding={3}>
-                <form onSubmit={(e) => e.preventDefault()}>
+    <>
+      <Stack minH={'100vh'} padding={3}>
+        <form onSubmit={(e) => e.preventDefault()}>
 
-                    <FormControl mb={'1rem'} id="bgColor" display={'flex'} justifyContent='space-around' alignItems={'center'}>
-                        <FormLabel>Bg Color</FormLabel>
-                        <Input
-                            width={'50px'}
+          <FormControl mb={'1rem'} id="bgColor" display={'flex'} justifyContent='space-around' alignItems={'center'}>
+            <FormLabel>Bg Color</FormLabel>
+            <Input
+              width={'50px'}
 
-                            type="color"
-                            name="bgColor"
-                            value={state.bgColor}
-                            onChange={handleInputChange}
-                            border='none'
-                            padding={'0'}
-                            rounded='full'
-                        />
+              type="color"
+              name="bgColor"
+              value={state.bgColor}
+              onChange={handleInputChange}
+              border='none'
+              padding={'0'}
+              rounded='full'
+            />
 
-                    </FormControl>
-                    <hr />
+          </FormControl>
+          <hr />
 
-                    <FormLabel mt={'1rem'} textAlign='center'>Headline</FormLabel>
-                    <FormControl mb={'1rem'} display={'flex'} justifyContent='space-around' alignItems={'center'} id="bgColor">
+          <FormLabel mt={'1rem'} textAlign='center'>Headline</FormLabel>
+          <FormControl mb={'1rem'} display={'flex'} justifyContent='space-around' alignItems={'center'} id="bgColor">
 
-                        <Input
-                            type="color"
-                            name="headerColor"
-                            value={state.bgColorHeader}
-                            onChange={handleInputChange}
-                            border='none'
-                            padding={'0'}
-                            rounded='full'
-                            width={'50px'}
-                        />
-                        <Select
-                            placeholder="Size"
-                            name="sizeHeader"
-                            onChange={handleInputChange}
-                            width='80px'
-                        >
-                            {SIZES.map((s) => (
-                                <option
-                                    defaultValue={s.size === state.sizeHeader ? s.size : ''}
-                                    value={s.size}
-                                    key={s.id}
-                                >
-                                    {s.size.toLocaleUpperCase()}
-                                </option>
-                            ))}
-                        </Select>
+            <Input
+              type="color"
+              name="headerColor"
+              value={state.bgColorHeader}
+              onChange={handleInputChange}
+              border='none'
+              padding={'0'}
+              rounded='full'
+              width={'50px'}
+            />
+            <SelectSizesFont name="sizeHeader" handleInputChange={handleInputChange} state={state.sizeHeader} />
+          </FormControl>
 
-                    </FormControl>
-                    <FormControl mb='1rem' display={'flex'} justifyContent='center'>
-                        <ButtonGroup>
-                            <IconButton icon={<FaAlignLeft />} onClick={() => handleAlign('left')} size={'xs'} />
-                            <IconButton icon={<FaAlignCenter />} onClick={() => handleAlign('center')} size={'xs'} />
-                            <IconButton icon={<FaAlignRight />} onClick={() => handleAlign('right')} size={'xs'} />
+          <MoreSettingsText state={state.alignHeader} dispatch={dispatch} action={nameInputs.alignHeader} />
 
-                        </ButtonGroup>
-                    </FormControl>
-                    <FormControl mb='1rem' display={'flex'} justifyContent='center'>
+          {/* <FormControl mb='1rem' display={'flex'} justifyContent='center'>
                         <ButtonGroup spacing={2}>
                             <IconButton onClick={() => handleType('bold')} icon={<FaBold/>} size={'xs'} />
                             <IconButton onClick={() => handleType('italic')} icon={<FaItalic/>} size={'xs'} />
                             <IconButton onClick={() => handleType('underline')} icon={<FaUnderline/>} size={'xs'} />
                         </ButtonGroup>
-                    </FormControl>
+                    </FormControl> */}
 
-                    <hr />
+          <hr />
 
-                    <FormLabel mt='1rem' mb='1rem'>Body Text</FormLabel>
-                    <FormControl mb={'1rem'} display={'flex'} justifyContent='space-around' alignItems={'center'} id="bgColor">
+          <FormLabel mt='1rem' mb='1rem'>Body Text</FormLabel>
+          <FormControl mb={'1rem'} display={'flex'} justifyContent='space-around' alignItems={'center'} id="bgColor">
 
-                        <Input
-                            type="color"
-                            name="subtitleColor"
+            <Input
+              type="color"
+              name="subtitleColor"
 
-                            value={state.bgColorSubtitle}
-                            onChange={handleInputChange}
-                            border='none'
-                            padding={'0'}
-                            rounded='full'
-                            width={'50px'}
+              value={state.bgColorSubtitle}
+              onChange={handleInputChange}
+              border='none'
+              padding={'0'}
+              rounded='full'
+              width={'50px'}
 
-                        />
+            />
+            <SelectSizesFont name="sizeSubtitlte" handleInputChange={handleInputChange} state={state.sizeSubtitlte} />
 
-                        <Select
-                            placeholder="Size"
-                            name="sizeSubtitlte"
-                            onChange={handleInputChange}
-                            width='80px'
-                        >
-                            {SIZES.map((s) => (
-                                <option
-                                    defaultValue={s.size === state.sizeHeader ? s.size : ''}
-                                    value={s.size}
-                                    key={s.id}
-                                >
-                                    {s.size.toLocaleUpperCase()}
-                                </option>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <FormControl mb='1rem' display={'flex'} justifyContent='center'>
-                        <ButtonGroup>
-                            <Button size={'xs'}><FaAlignLeft /></Button>
-                            <Button size={'xs'}><FaAlignCenter /></Button>
-                            <Button size={'xs'}><FaAlignRight /></Button>
-                        </ButtonGroup>
-                    </FormControl>
-                    <FormControl mb='1rem' display={'flex'} justifyContent='center'>
+          </FormControl>
+          <MoreSettingsText state={state.alignSubtitle} dispatch={dispatch} action={nameInputs.alignSubtitle} />
+
+          {/* <FormControl mb='1rem' display={'flex'} justifyContent='center'>
                         <ButtonGroup spacing={2}>
                             <Button size={'xs'}><FaBold /></Button>
                             <Button size={'xs'}><FaItalic /></Button>
                             <Button size={'xs'}><FaUnderline /></Button>
                         </ButtonGroup>
-                    </FormControl>
+                    </FormControl> */}
 
-                    <hr />
+          <hr />
 
-                    <FormControl mt={'1rem'} mb={'1rem'} display='flex' alignItems='center'>
-                        <FormLabel htmlFor='allow-image' mb='0' >
-                            Add Image
-                        </FormLabel>
-                        <Switch id='allow-image' isChecked={allowImage} onChange={() => setAllowImage(!allowImage)} />
-                    </FormControl>
+          <FormControl mt={'1rem'} mb={'1rem'} display='flex' alignItems='center'>
+            <FormLabel htmlFor='allow-image' mb='0' >
+              Add Image
+            </FormLabel>
+            <Switch id='allow-image' isChecked={allowImage} onChange={() => setAllowImage(!allowImage)} />
+          </FormControl>
 
-                    <FormControl mb={'1rem'} hidden={!allowImage}>
-                        <input onChange={handleInputChangeImage} type="file" name="image" id="image" />
-                        <Button onClick={onOpen} ref={btnSettingsImage} variant='outline' mt={'1rem'} size={'md'}>Settings Image</Button>
-                    </FormControl>
+          <FormControl mb={'1rem'} hidden={!allowImage}>
+            <input onChange={handleInputChangeImage} type="file" name="image" id="image" />
+            <Button onClick={onOpen} ref={btnSettingsImage} variant='outline' mt={'1rem'} size={'md'}>Settings Image</Button>
+          </FormControl>
 
-                    <FormControl display='flex' alignItems='center'>
-                        <FormLabel htmlFor='allow-code.editor' mb='0' >
-                            Add Editor
-                        </FormLabel>
-                        <Switch id='allow-code.editor' isChecked={allowCodeEditor} onChange={() => setAllowCodeEditor(!allowCodeEditor)} />
-                    </FormControl>
-                </form>
-            </Stack>
-            <SettingsImages isOpen={isOpen} onClose={onClose} btnRef={btnSettingsImage} />
-        </>
+          <FormControl display='flex' alignItems='center'>
+            <FormLabel htmlFor='allow-code.editor' mb='0' >
+              Add Editor
+            </FormLabel>
+            <Switch id='allow-code.editor' isChecked={allowCodeEditor} onChange={() => setAllowCodeEditor(!allowCodeEditor)} />
+          </FormControl>
+        </form>
+      </Stack>
+      <SettingsImages isOpen={isOpen} onClose={onClose} btnRef={btnSettingsImage} />
+    </>
   )
 }
 

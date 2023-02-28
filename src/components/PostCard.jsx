@@ -49,13 +49,10 @@ const PostCard = ({ postCard }) => {
         <EditableInput />
       </Editable>
       <Editable
-        textAlign="center"
+        textAlign={state.alignSubtitle}
         fontSize={state.sizeSubtitlte}
         color={state.bgColorSubtitle}
         defaultValue="Enter your subtitle"
-        justifyContent="center"
-        alignItems="center"
-        display="flex"
         maxW={'100%'}
       >
         <EditablePreview />

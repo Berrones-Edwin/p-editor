@@ -16,11 +16,11 @@ import {
 import { filters } from '../constants/filter'
 import { useUserProvider } from '../hooks/useUserProvider'
 
-const ImageFilter = ({ filter, src, alt, name, setFilter }) => {
+const ImageFilter = ({ filter, src, alt, name, setSettings, settings }) => {
   return (
     <>
 
-        <Stack onClick={() => setFilter({ filter })} cursor={'pointer'} display={'flex'} justifyContent='center' alignItems={'center'} flexDir='column' className={filter}>
+        <Stack onClick={() => setSettings({ filter })} cursor={'pointer'} display={'flex'} justifyContent='center' alignItems={'center'} flexDir='column' className={filter}>
             <Avatar src={src} size='lg' alt={filter} />
             <p>{name}</p>
         </Stack>
@@ -29,13 +29,14 @@ const ImageFilter = ({ filter, src, alt, name, setFilter }) => {
 }
 
 const SettingsImages = ({ isOpen, onClose, btnRef }) => {
-  const { user: { image }, setUser } = useUserProvider()
+  const { user, user: { image }, setUser } = useUserProvider()
   const [settings, setSettings] = useState({
     filter: ''
   })
 
   const handleSettings = () => {
     setUser({
+      ...user,
       image: {
         ...image,
         filter: settings.filter
@@ -64,7 +65,7 @@ const SettingsImages = ({ isOpen, onClose, btnRef }) => {
                         {
                             image
                               ? filters.map((filter) => {
-                                return <ImageFilter setFilter={setSettings} name={filter.name} filter={filter.class} key={filter.name} src={image.src} alt={image.src.lastModified} />
+                                return <ImageFilter settings={settings} setSettings={setSettings} name={filter.name} filter={filter.class} key={filter.name} src={image.src} alt={image.src.lastModified} />
                               })
                               : null
                         }
