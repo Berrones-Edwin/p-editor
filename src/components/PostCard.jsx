@@ -18,10 +18,10 @@ const PostCard = ({ postCard }) => {
     <Stack
       ref={postCard}
       borderRadius="md"
-      minH={'630px'}
-      maxH={'630px'}
-      maxW={'630px'}
-      minW={'630px'}
+      minH={user.sizeImage.h}
+      maxH={user.sizeImage.h}
+      maxW={user.sizeImage.w}
+      minW={user.sizeImage.w}
       bgColor={state.bgColor}
       padding={'3rem'}
       position='relative'

@@ -11,11 +11,13 @@ import {
 } from '@chakra-ui/react'
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { toPng } from 'html-to-image'
+import { useUserProvider } from '../hooks/useUserProvider'
 
 export default function NavBar ({ postCard }) {
   const { colorMode, toggleColorMode } = useColorMode()
   const toast = useToast()
   const id = useId()
+  const { user } = useUserProvider()
 
   const handleDownload = useCallback(() => {
     if (postCard.current === null) {
@@ -25,7 +27,7 @@ export default function NavBar ({ postCard }) {
     toPng(postCard.current, { cacheBust: true })
       .then((dataUrl) => {
         const link = document.createElement('a')
-        link.download = `${id}.png`
+        link.download = `${user.sizeImage.name}.png`
         link.href = dataUrl
         link.click()
 
@@ -33,7 +35,7 @@ export default function NavBar ({ postCard }) {
           title: 'Image downloaded.',
           description: "We've downloaded your image for you.",
           status: 'success',
-          duration: 500,
+          duration: 9000,
           isClosable: true
         })
       })
@@ -43,7 +45,7 @@ export default function NavBar ({ postCard }) {
           title: 'Something has gone wrong',
           description: err,
           status: 'error',
-          duration: 500,
+          duration: 9000,
           isClosable: true
         })
       })
