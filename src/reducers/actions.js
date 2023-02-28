@@ -6,27 +6,10 @@ export const ActionType = {
   SIZESUBTITLTE: 4,
   ALIGNHEADER: 5,
   ALIGNSUBTITLE: 6,
-  STYLEHEADER: 7,
-  STYLESUBTITLE: 8
-}
-
-export const ChangeBgColor = {
-  type: ActionType.BGCOLOR,
-  payload: ''
-}
-export const ChangeBgColorHeader = {
-  type: ActionType.BGCOLORHEADER,
-  payload: ''
-}
-export const ChangeBgColorSubtitle = {
-  type: ActionType.BGCOLORSUBTITLE,
-  payload: ''
-}
-export const ChangeSizeHeader = {
-  type: ActionType.SIZEHEADER,
-  payload: ''
-}
-export const ChangeSizeSubtitle = {
-  type: ActionType.SIZESUBTITLTE,
-  payload: ''
+  STYLEHEADERBOLD: 7,
+  STYLEHEADERITALIC: 8,
+  STYLEHEADERUNDERLINE: 9,
+  STYLESUBTITLERBOLD: 10,
+  STYLESUBTITLETALIC: 11,
+  STYLESUBTITLEUNDERLINE: 12
 }

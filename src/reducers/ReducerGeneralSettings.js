@@ -19,10 +19,18 @@ export function reducerGeneralSettings (
       return { ...state, alignHeader: action.payload }
     case ActionType.ALIGNSUBTITLE:
       return { ...state, alignSubtitle: action.payload }
-    case ActionType.STYLEHEADER:
-      return { ...state, styleHeader: action.payload }
-    case ActionType.STYLESUBTITLE:
-      return { ...state, styleSubtitle: action.payload }
+    case ActionType.STYLEHEADERBOLD:
+      return { ...state, styleHeaderBold: action.payload }
+    case ActionType.STYLEHEADERITALIC:
+      return { ...state, styleHeaderItalic: action.payload }
+    case ActionType.STYLEHEADERUNDERLINE:
+      return { ...state, styleHeaderUnderline: action.payload }
+    case ActionType.STYLESUBTITLERBOLD:
+      return { ...state, styleSubtitleBold: action.payload }
+    case ActionType.STYLESUBTITLEUNDERLINE:
+      return { ...state, styleSubtitleUnderline: action.payload }
+    case ActionType.STYLESUBTITLETALIC:
+      return { ...state, styleSubtitleItalic: action.payload }
     default:
       return state
   }

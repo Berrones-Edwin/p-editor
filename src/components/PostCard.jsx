@@ -12,13 +12,6 @@ import { useUserProvider } from '../hooks/useUserProvider'
 const PostCard = ({ postCard }) => {
   const { state } = useGeneralSettings()
   const { user } = useUserProvider()
-  const [style, setStyle] = useState(null)
-
-  useEffect(() => {
-    if (state.styleHeader === 'italic') setStyle("fontStyle :'italic'")
-    else if (state.styleHeader === 'bold') setStyle("fontWeight:'bold'")
-    else if (state.styleHeader === 'underline') setStyle("textDecoration:'underline'")
-  }, [state.styleHeader, setStyle])
 
   return (
 
@@ -42,10 +35,13 @@ const PostCard = ({ postCard }) => {
         color={state.bgColorHeader}
         as="h1"
         defaultValue="Enter your header"
-        style={{ style }}
+        style={{
+          fontStyle: state.styleHeaderItalic ? 'italic' : '',
+          fontWeight: state.styleHeaderBold ? 'bold' : ''
+        }}
 
       >
-        <EditablePreview />
+        <EditablePreview style={{ textDecoration: state.styleHeaderUnderline ? 'underline' : '' }}/>
         <EditableInput />
       </Editable>
       <Editable
@@ -54,8 +50,13 @@ const PostCard = ({ postCard }) => {
         color={state.bgColorSubtitle}
         defaultValue="Enter your subtitle"
         maxW={'100%'}
+        as='p'
+        style={{
+          fontStyle: state.styleSubtitleItalic ? 'italic' : '',
+          fontWeight: state.styleSubtitleBold ? 'bold' : ''
+        }}
       >
-        <EditablePreview />
+        <EditablePreview style={{ textDecoration: state.styleSubtitleUnderline ? 'underline' : '' }} />
         <EditableInput />
       </Editable>
       {

@@ -26,6 +26,12 @@ import { useUserProvider } from '../hooks/useUserProvider'
 import SettingsImages from './SettingsImages'
 import MoreSettingsText from './MoreSettingsText'
 import SelectSizesFont from './SelectSizesFont'
+import {
+  FaAlignCenter, FaAlignJustify, FaAlignLeft, FaAlignRight, FaBold,
+  FaItalic,
+  FaUnderline
+} from 'react-icons/fa'
+import MoreStyleFont from './MoreStyleFont'
 
 const nameInputs = {
   bgColor: 0,
@@ -35,8 +41,12 @@ const nameInputs = {
   sizeSubtitlte: 4,
   alignHeader: 5,
   alignSubtitle: 6,
-  styleHeader: 7,
-  styleSubtitle: 8
+  styleHeaderBold: 7,
+  styleHeaderItalic: 8,
+  styleHeaderUnderline: 9,
+  styleSubtitleBold: 10,
+  styleSubtitleItalic: 11,
+  styleSubtitleUnderline: 12
 }
 
 const GeneralSettingsForm = () => {
@@ -68,16 +78,6 @@ const GeneralSettingsForm = () => {
     }
   }
 
-  const handleType = (value) => {
-    console.log({
-      type: nameInputs.styleHeader,
-      payload: value
-    })
-    dispatch({
-      type: nameInputs.styleHeader,
-      payload: value
-    })
-  }
   return (
     <>
       <Stack minH={'100vh'} padding={3}>
@@ -117,14 +117,7 @@ const GeneralSettingsForm = () => {
           </FormControl>
 
           <MoreSettingsText state={state.alignHeader} dispatch={dispatch} action={nameInputs.alignHeader} />
-
-          {/* <FormControl mb='1rem' display={'flex'} justifyContent='center'>
-                        <ButtonGroup spacing={2}>
-                            <IconButton onClick={() => handleType('bold')} icon={<FaBold/>} size={'xs'} />
-                            <IconButton onClick={() => handleType('italic')} icon={<FaItalic/>} size={'xs'} />
-                            <IconButton onClick={() => handleType('underline')} icon={<FaUnderline/>} size={'xs'} />
-                        </ButtonGroup>
-                    </FormControl> */}
+          <MoreStyleFont dispatch={dispatch} nameInputs={nameInputs} state={state} header />
 
           <hr />
 
@@ -147,14 +140,7 @@ const GeneralSettingsForm = () => {
 
           </FormControl>
           <MoreSettingsText state={state.alignSubtitle} dispatch={dispatch} action={nameInputs.alignSubtitle} />
-
-          {/* <FormControl mb='1rem' display={'flex'} justifyContent='center'>
-                        <ButtonGroup spacing={2}>
-                            <Button size={'xs'}><FaBold /></Button>
-                            <Button size={'xs'}><FaItalic /></Button>
-                            <Button size={'xs'}><FaUnderline /></Button>
-                        </ButtonGroup>
-                    </FormControl> */}
+          <MoreStyleFont dispatch={dispatch} nameInputs={nameInputs} state={state} />
 
           <hr />
 

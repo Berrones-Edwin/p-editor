@@ -6,7 +6,11 @@ export const initialState = {
   sizeSubtitlte: 'lg',
   alignHeader: 'center',
   alignSubtitle: 'center',
-  styleHeader: '',
-  styleSubtitle: ''
+  styleHeaderBold: false,
+  styleHeaderItalic: false,
+  styleHeaderUnderline: false,
+  styleSubtitleBold: false,
+  styleSubtitleItalic: false,
+  styleSubtitleUnderline: false
 
 }
