@@ -5,7 +5,8 @@ import {
   Button,
   useColorModeValue,
   Stack,
-  useColorMode
+  useColorMode,
+  useToast
 
 } from '@chakra-ui/react'
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
@@ -13,6 +14,7 @@ import { toPng } from 'html-to-image'
 
 export default function NavBar ({ postCard }) {
   const { colorMode, toggleColorMode } = useColorMode()
+  const toast = useToast()
   const id = useId()
 
   const handleDownload = useCallback(() => {
@@ -26,9 +28,24 @@ export default function NavBar ({ postCard }) {
         link.download = `${id}.png`
         link.href = dataUrl
         link.click()
+
+        toast({
+          title: 'Image downloaded.',
+          description: "We've downloaded your image for you.",
+          status: 'success',
+          duration: 500,
+          isClosable: true
+        })
       })
       .catch((err) => {
         console.log(err)
+        toast({
+          title: 'Something has gone wrong',
+          description: err,
+          status: 'error',
+          duration: 500,
+          isClosable: true
+        })
       })
   }, [postCard])
   return (
