@@ -15,6 +15,7 @@
     "@cloudinary/url-gen": "^1.9.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "firebase": "^9.17.1",
     "framer-motion": "^9.0.7",
     "html-to-image": "^1.11.11",
     "re-resizable": "^6.9.9",
