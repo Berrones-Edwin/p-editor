@@ -60,6 +60,10 @@ function App () {
         w = 1024
         h = 512
         break
+      case 'default':
+        w = 630
+        h = 630
+        break
     }
     setUser({
       ...user,
@@ -83,11 +87,11 @@ function App () {
           backdropFilter='blur(10px) hue-rotate(90deg)' />
         <ModalContent>
           <ModalHeader>Settings Image</ModalHeader>
-          <ModalCloseButton />
+          {/* <ModalCloseButton /> */}
           <ModalBody pb={6}>
             <form action="">
               <FormControl>
-                <Input name='name' value={form.name} onChange={handleChange} />
+                <Input name='name' autoComplete='off' placeholder='Enter your file name' value={form.name} onChange={handleChange} />
               </FormControl>
               <FormControl>
                 <Select variant='flushed' onChange={handleChange} name="size" value={form.size} placeholder='Select your option'>
@@ -118,6 +122,7 @@ function App () {
         <Stack
           as="main"
           minH={'100vh'}
+          minW={'100%'}
           direction={'row'}
           justifyContent={'center'}
           alignItems={'center'}
