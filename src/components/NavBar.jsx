@@ -1,4 +1,4 @@
-import { useCallback, useId } from 'react'
+import { useCallback, useEffect, useId } from 'react'
 import {
   Box,
   Flex,
@@ -6,18 +6,69 @@ import {
   useColorModeValue,
   Stack,
   useColorMode,
-  useToast
+  useToast,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Image,
+  Avatar,
+  MenuDivider,
+  useDisclosure
 
 } from '@chakra-ui/react'
-import { MoonIcon, SunIcon } from '@chakra-ui/icons'
+import { MoonIcon, SunIcon, ChevronDownIcon } from '@chakra-ui/icons'
+import { FaLaptopCode, FaSoundcloud, FaRegSave, FaThList, FaSignOutAlt } from 'react-icons/fa'
 import { toPng } from 'html-to-image'
 import { useUserProvider } from '../hooks/useUserProvider'
+import { uploadService } from '../services/uploadImage'
+import { loginWithGoogle, logout } from '../services/auth-firebase'
+import { useAuth } from '../hooks/useAuth'
+import { GoogleAuthProvider } from 'firebase/auth'
+import { saveImages } from '../services/db-firebase'
+import SideBarCloudImages from './SideBarCloudImages'
 
 export default function NavBar ({ postCard }) {
   const { colorMode, toggleColorMode } = useColorMode()
   const toast = useToast()
-  const id = useId()
   const { user } = useUserProvider()
+  const { auth, setAuth } = useAuth()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const uploadImage = () => {
+    toPng(postCard.current, { cacheBust: true })
+      .then((dataUrl) => {
+        // create Images
+        const link = document.createElement('a')
+        link.download = `${user.sizeImage.name}.png`
+        link.href = dataUrl
+
+        // Upload to cloudinary
+        uploadService({ data: dataUrl }).then(async (data) => {
+          if (data) {
+            // save reference on firebase public_id
+
+            await saveImages({ imageUrl: data.public_id, uid: auth?.user?.uid })
+            toast({
+              title: 'Image uploaded.',
+              description: "We've uploaded your image for you.",
+              status: 'success',
+              duration: 9000,
+              isClosable: true
+            })
+          }
+        })
+      })
+      .catch((err) => {
+        toast({
+          title: 'Something has gone wrong',
+          description: err,
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        })
+      })
+  }
 
   const handleDownload = useCallback(() => {
     if (postCard.current === null) {
@@ -40,7 +91,6 @@ export default function NavBar ({ postCard }) {
         })
       })
       .catch((err) => {
-        console.log(err)
         toast({
           title: 'Something has gone wrong',
           description: err,
@@ -50,6 +100,49 @@ export default function NavBar ({ postCard }) {
         })
       })
   }, [postCard])
+
+  const handleDownloadCloud = useCallback(() => {
+    if (postCard.current === null) {
+      return
+    }
+
+    if (auth) {
+      uploadImage()
+    } else {
+      loginWithGoogle().then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result)
+        const token = credential.accessToken
+        // The signed-in user info.
+        const user = result.user
+        // IdP data available using getAdditionalUserInfo(result)
+
+        localStorage.setItem('auth', JSON.stringify({ token, user }))
+        setAuth({
+          token,
+          user
+        })
+        setTimeout(() => uploadImage(), 500)
+
+        // ...
+      }).catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code
+        const errorMessage = error.message
+        // The email of the user's account used.
+        const email = error.customData.email
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error)
+        // ...
+      })
+    }
+  }, [postCard])
+
+  const handleLogout = () => {
+    logout()
+    setAuth(null)
+  }
+
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -60,11 +153,47 @@ export default function NavBar ({ postCard }) {
                 {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
               </Button>
 
-              <Button onClick={handleDownload}>Download</Button>
+              <Menu>
+                <MenuButton leftIcon={<FaRegSave />} as={Button} rightIcon={<ChevronDownIcon />}>
+                  Save
+                </MenuButton>
+                <MenuList>
+                  <MenuItem onClick={handleDownload} icon={<FaLaptopCode />}>Local</MenuItem>
+                  <MenuItem onClick={handleDownloadCloud} icon={<FaSoundcloud />} minH='48px'>Upload Cloud</MenuItem>
+
+                </MenuList>
+              </Menu>
+
+              {
+
+                auth?.user
+                  ? (
+
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    rounded={'full'}
+                    variant={'link'}
+                    cursor={'pointer'}
+                    minW={0}>
+                    <Avatar
+                      size={'sm'}
+                      src={auth.user.photoURL}
+                    />
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem onClick={onOpen} icon={<FaThList />}>My images</MenuItem>
+                    <MenuItem onClick={handleLogout} icon={<FaSignOutAlt />}>logout</MenuItem>
+                  </MenuList>
+                </Menu>)
+                  : null
+              }
+
             </Stack>
           </Flex>
         </Flex>
       </Box>
+      <SideBarCloudImages onClose={onClose} isOpen={isOpen} />
     </>
   )
 }

@@ -49,6 +49,7 @@ const UserSettingsForm = () => {
     if (form.photo) {
       uploadService({ data: form.photo }).then((data) => {
         if (data) {
+          console.log({ data })
           const avatar = cloudinary.image(data.public_id)
             .resize(
               thumbnail()

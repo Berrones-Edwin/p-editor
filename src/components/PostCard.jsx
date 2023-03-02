@@ -5,13 +5,16 @@ import {
   EditablePreview,
   Image, Text, EditableTextarea
 } from '@chakra-ui/react'
+import { Resizable } from 're-resizable'
 import React, { useEffect, useState } from 'react'
+import { useAuth } from '../hooks/useAuth'
 import useGeneralSettings from '../hooks/useGeneralSettings'
 import { useUserProvider } from '../hooks/useUserProvider'
 
 const PostCard = ({ postCard }) => {
   const { state } = useGeneralSettings()
   const { user } = useUserProvider()
+  const { auth } = useAuth()
 
   return (
 
@@ -41,7 +44,7 @@ const PostCard = ({ postCard }) => {
         }}
 
       >
-        <EditablePreview style={{ textDecoration: state.styleHeaderUnderline ? 'underline' : '' }}/>
+        <EditablePreview style={{ textDecoration: state.styleHeaderUnderline ? 'underline' : '' }} />
         <EditableInput />
       </Editable>
       <Editable
@@ -61,11 +64,13 @@ const PostCard = ({ postCard }) => {
       </Editable>
       {
         user.image.src
-          ? (<figure className={user.image.filter}>
 
-            <Image
-              src={user.image.src} width="534px" height={'300px'} alt={user.image.src} />
-          </figure>)
+          ? (<Resizable>
+            <figure style={{ minWidth: '100%', width: '100%', minHeight: '100%' }} className={user.image.filter}>
+              <Image
+                src={user.image.src} minW='100%' minHeight={'100%'} alt={user.image.src} />
+            </figure>
+          </Resizable>)
           : null
       }
 
