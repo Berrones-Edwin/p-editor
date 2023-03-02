@@ -89,13 +89,13 @@ function App () {
           <ModalHeader>Settings Image</ModalHeader>
           {/* <ModalCloseButton /> */}
           <ModalBody pb={6}>
-            <form action="">
+            <form onSubmit={e => e.preventDefault()} action="">
               <FormControl>
                 <Input name='name' autoComplete='off' placeholder='Enter your file name' value={form.name} onChange={handleChange} />
               </FormControl>
               <FormControl>
                 <Select variant='flushed' onChange={handleChange} name="size" value={form.size} placeholder='Select your option'>
-                  <option value="default" selected>Default (630x630)</option>
+                  <option value="default" defaultValue>Default (630x630)</option>
                   <option value="" disabled>Facebook</option>
                   <option value="stories-fb">Stories (750x1334)</option>
                   <option value="" disabled>Instagram</option>

@@ -1,6 +1,6 @@
-export async function uploadService ({ data }) {
+export async function uploadService ({ data, preset = 'gg55hzew' }) {
   const formData = new FormData()
-  formData.append('upload_preset', 'gg55hzew')
+  formData.append('upload_preset', preset)
   formData.append('file', data)
   formData.append('timestamp', Date.now() / 1000)
   formData.append('api_key', 539682137535788)
