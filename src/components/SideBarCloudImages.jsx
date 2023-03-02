@@ -10,24 +10,17 @@ import {
 
   Stack
 } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
-import { useAuth } from '../hooks/useAuth'
-import { loadImages } from '../services/db-firebase'
+import React from 'react'
 import CardCloudImages from './CardCloudImages'
 
-const SideBarCloudImages = ({ onClose, isOpen }) => {
-  const { auth } = useAuth()
-  const [images, setImages] = useState(null)
-  useEffect(() => {
-    loadImages({ uid: auth.user.uid }).then((data) => setImages(data))
-  }, [])
-
+const SideBarCloudImages = ({ onClose, isOpen, images }) => {
   return (
         <Drawer onClose={onClose} isOpen={isOpen} size={'lg'}>
             <DrawerOverlay />
             <DrawerContent>
                 <DrawerCloseButton />
-                <DrawerHeader>My Cloud</DrawerHeader>
+                <DrawerHeader>My Cloud <button>Reload</button></DrawerHeader>
+
                 <DrawerBody>
                     <Stack display={'flex'} justifyContent='center' alignItems={'center'} gap='2' flexDir='row' flexWrap={'wrap'}
                     >

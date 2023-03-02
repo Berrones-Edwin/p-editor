@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId } from 'react'
+import { useCallback, useEffect, useId, useState } from 'react'
 import {
   Box,
   Flex,
@@ -25,7 +25,7 @@ import { uploadService } from '../services/uploadImage'
 import { loginWithGoogle, logout } from '../services/auth-firebase'
 import { useAuth } from '../hooks/useAuth'
 import { GoogleAuthProvider } from 'firebase/auth'
-import { saveImages } from '../services/db-firebase'
+import { loadImages, saveImages } from '../services/db-firebase'
 import SideBarCloudImages from './SideBarCloudImages'
 
 export default function NavBar ({ postCard }) {
@@ -34,6 +34,7 @@ export default function NavBar ({ postCard }) {
   const { user } = useUserProvider()
   const { auth, setAuth } = useAuth()
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [images, setImages] = useState(null)
 
   const uploadImage = () => {
     toPng(postCard.current, { cacheBust: true })
@@ -143,6 +144,13 @@ export default function NavBar ({ postCard }) {
     setAuth(null)
   }
 
+  const handleOpenSideBar = () => {
+    loadImages({ uid: auth.user.uid }).then((data) => {
+      setImages(data)
+      onOpen()
+    })
+  }
+
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -182,7 +190,7 @@ export default function NavBar ({ postCard }) {
                     />
                   </MenuButton>
                   <MenuList>
-                    <MenuItem onClick={onOpen} icon={<FaThList />}>My images</MenuItem>
+                    <MenuItem onClick={handleOpenSideBar} icon={<FaThList />}>My images</MenuItem>
                     <MenuItem onClick={handleLogout} icon={<FaSignOutAlt />}>logout</MenuItem>
                   </MenuList>
                 </Menu>)
@@ -193,7 +201,7 @@ export default function NavBar ({ postCard }) {
           </Flex>
         </Flex>
       </Box>
-      <SideBarCloudImages onClose={onClose} isOpen={isOpen} />
+      <SideBarCloudImages images={images} onClose={onClose} isOpen={isOpen} />
     </>
   )
 }
