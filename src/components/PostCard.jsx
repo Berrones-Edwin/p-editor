@@ -6,14 +6,20 @@ import {
   EditablePreview,
   Image, Text, EditableTextarea, Stack
 } from '@chakra-ui/react'
-import { Resizable } from 're-resizable'
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
+import CodeMirror from '@uiw/react-codemirror'
+import { javascript } from '@codemirror/lang-javascript'
 import useGeneralSettings from '../hooks/useGeneralSettings'
 import { useUserProvider } from '../hooks/useUserProvider'
+import { darcula } from '@uiw/codemirror-theme-darcula'
 
 const PostCard = ({ postCard }) => {
   const { state } = useGeneralSettings()
   const { user } = useUserProvider()
+
+  const onChange = useCallback((value, viewUpdate) => {
+
+  }, [])
 
   return (
 
@@ -65,12 +71,24 @@ const PostCard = ({ postCard }) => {
       {
         user.image.src
 
-          ? (<Stack>
+          ? (<Stack height={'300'} display={'flex'} flexDir='row' justifyContent='center'>
             <figure className={user.image.filter}>
               <Image
-                src={user.image.src} minW='100%' minHeight={'100%'} alt={user.image.src} />
+                src={user.image.src} height='300px' alt={user.image.src} />
             </figure>
           </Stack>)
+          : null
+      }
+      {
+        user.code
+          ? <CodeMirror
+            value="console.log('hello world!');"
+            height="400px"
+            extensions={[javascript({ jsx: true })]}
+            onChange={onChange}
+            theme={'dark'}
+            style={{ fontSize: '1.25rem' }}
+          />
           : null
       }
 

@@ -59,7 +59,7 @@ const nameInputs = {
 const GeneralSettingsForm = () => {
   const { state, dispatch } = useGeneralSettings()
   const [allowImage, setAllowImage] = useState(false)
-  const [allowCodeEditor, setAllowCodeEditor] = useState(false)
+  const [allowCodeEditor, setAllowCodeEditor] = useState(true)
   const { user, setUser } = useUserProvider()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnSettingsImage = useRef()
@@ -91,14 +91,32 @@ const GeneralSettingsForm = () => {
 
   const handleAllowCodeEditor = () => {
     setAllowCodeEditor(!allowCodeEditor)
+    setUser({
+      ...user,
+      code: !allowCodeEditor
+    })
   }
 
   useEffect(() => {
-    if (allowCodeEditor) setAllowImage(false)
+    if (allowCodeEditor) {
+      setAllowImage(false)
+      setUser({
+        ...user,
+        image: {
+          src: ''
+        }
+      })
+    }
   }, [allowCodeEditor])
 
   useEffect(() => {
-    if (allowImage) { setAllowCodeEditor(false) }
+    if (allowImage) {
+      setAllowCodeEditor(false)
+      setUser({
+        ...user,
+        code: false
+      })
+    }
   }, [allowImage])
 
   return (
