@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import {
   Box,
   CloseButton,
@@ -17,20 +17,27 @@ import {
   Icon,
   useDisclosure,
   ButtonGroup,
-  IconButton
+  IconButton,
+  Accordion,
+  AccordionItem,
+  AccordionPanel,
+  AccordionButton,
+  AccordionIcon
 
 } from '@chakra-ui/react'
+import {
+  FaFileUpload,
+  FaAlignCenter, FaAlignJustify, FaAlignLeft, FaAlignRight, FaBold,
+  FaItalic,
+  FaUnderline, FaBahai
+} from 'react-icons/fa'
 import useGeneralSettings from '../hooks/useGeneralSettings'
 import { SIZES } from '../constants/sizes'
 import { useUserProvider } from '../hooks/useUserProvider'
 import SettingsImages from './SettingsImages'
 import MoreSettingsText from './MoreSettingsText'
 import SelectSizesFont from './SelectSizesFont'
-import {
-  FaAlignCenter, FaAlignJustify, FaAlignLeft, FaAlignRight, FaBold,
-  FaItalic,
-  FaUnderline
-} from 'react-icons/fa'
+
 import MoreStyleFont from './MoreStyleFont'
 
 const nameInputs = {
@@ -56,6 +63,7 @@ const GeneralSettingsForm = () => {
   const { user, setUser } = useUserProvider()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnSettingsImage = useRef()
+  const btnInputfile = useRef()
 
   const handleInputChange = (e) => {
     dispatch({
@@ -77,6 +85,21 @@ const GeneralSettingsForm = () => {
       }
     }
   }
+  const handleAllowImage = () => {
+    setAllowImage(!allowImage)
+  }
+
+  const handleAllowCodeEditor = () => {
+    setAllowCodeEditor(!allowCodeEditor)
+  }
+
+  useEffect(() => {
+    if (allowCodeEditor) setAllowImage(false)
+  }, [allowCodeEditor])
+
+  useEffect(() => {
+    if (allowImage) { setAllowCodeEditor(false) }
+  }, [allowImage])
 
   return (
     <>
@@ -84,7 +107,7 @@ const GeneralSettingsForm = () => {
         <form onSubmit={(e) => e.preventDefault()}>
 
           <FormControl mb={'1rem'} id="bgColor" display={'flex'} justifyContent='space-around' alignItems={'center'}>
-            <FormLabel>Bg Color</FormLabel>
+            <FormLabel>Background</FormLabel>
             <Input
               width={'50px'}
 
@@ -98,7 +121,6 @@ const GeneralSettingsForm = () => {
             />
 
           </FormControl>
-          <hr />
 
           <FormLabel mt={'1rem'} textAlign='center'>Headline</FormLabel>
           <FormControl mb={'1rem'} display={'flex'} justifyContent='space-around' alignItems={'center'} id="bgColor">
@@ -116,12 +138,24 @@ const GeneralSettingsForm = () => {
             <SelectSizesFont name="sizeHeader" handleInputChange={handleInputChange} state={state.sizeHeader} />
           </FormControl>
 
-          <MoreSettingsText state={state.alignHeader} dispatch={dispatch} action={nameInputs.alignHeader} />
-          <MoreStyleFont dispatch={dispatch} nameInputs={nameInputs} state={state} header />
+          <Accordion allowToggle>
+            <AccordionItem>
+              <h2>
+                <AccordionButton>
+                  <Box as="span" flex='1' textAlign='left'>
+                    More Options
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                <MoreSettingsText state={state.alignHeader} dispatch={dispatch} action={nameInputs.alignHeader} />
+                <MoreStyleFont dispatch={dispatch} nameInputs={nameInputs} state={state} header />
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
 
-          <hr />
-
-          <FormLabel mt='1rem' mb='1rem'>Body Text</FormLabel>
+          <FormLabel mt='1rem' textAlign={'center'} mb='1rem'>Body Text</FormLabel>
           <FormControl mb={'1rem'} display={'flex'} justifyContent='space-around' alignItems={'center'} id="bgColor">
 
             <Input
@@ -139,28 +173,45 @@ const GeneralSettingsForm = () => {
             <SelectSizesFont name="sizeSubtitlte" handleInputChange={handleInputChange} state={state.sizeSubtitlte} />
 
           </FormControl>
-          <MoreSettingsText state={state.alignSubtitle} dispatch={dispatch} action={nameInputs.alignSubtitle} />
-          <MoreStyleFont dispatch={dispatch} nameInputs={nameInputs} state={state} />
+          <Accordion allowToggle>
+            <AccordionItem>
+              <h2>
+                <AccordionButton>
+                  <Box as="span" flex='1' textAlign='left'>
+                    More Options
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
 
-          <hr />
+                <MoreSettingsText state={state.alignSubtitle} dispatch={dispatch} action={nameInputs.alignSubtitle} />
+                <MoreStyleFont dispatch={dispatch} nameInputs={nameInputs} state={state} />
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
 
           <FormControl mt={'1rem'} mb={'1rem'} display='flex' alignItems='center'>
             <FormLabel htmlFor='allow-image' mb='0' >
               Add Image
             </FormLabel>
-            <Switch id='allow-image' isChecked={allowImage} onChange={() => setAllowImage(!allowImage)} />
+            <Switch id='allow-image' isChecked={allowImage} onChange={handleAllowImage} />
           </FormControl>
 
-          <FormControl mb={'1rem'} hidden={!allowImage}>
-            <input onChange={handleInputChangeImage} type="file" name="image" id="image" />
-            <Button onClick={onOpen} ref={btnSettingsImage} variant='outline' mt={'1rem'} size={'md'}>Settings Image</Button>
+          <FormControl mb={'1rem'} hidden={!allowImage} display='flex' flexDir={'row'} alignItems='center' justifyContent={'space-around'}>
+            <input ref={btnInputfile} onChange={handleInputChangeImage} type="file" name="image" id="image" hidden />
+            <Button leftIcon={<FaFileUpload />} onClick={() => { btnInputfile.current?.click() }}>
+              Upload
+            </Button>
+            <Button onClick={onOpen} ref={btnSettingsImage} variant='outline' size={'sm'} hidden={!user.image.src}><FaBahai /></Button>
+
           </FormControl>
 
           <FormControl display='flex' alignItems='center'>
             <FormLabel htmlFor='allow-code.editor' mb='0' >
               Add Editor
             </FormLabel>
-            <Switch id='allow-code.editor' isChecked={allowCodeEditor} onChange={() => setAllowCodeEditor(!allowCodeEditor)} />
+            <Switch id='allow-code.editor' isChecked={allowCodeEditor} onChange={handleAllowCodeEditor} />
           </FormControl>
         </form>
       </Stack>

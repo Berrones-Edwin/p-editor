@@ -11,9 +11,9 @@ const UserContextProvider = ({ children }) => {
       filter: ''
     },
     sizeImage: {
-      w: 630,
-      h: 630,
-      name: ''
+      w: 650,
+      h: 650,
+      name: 'default'
     }
   })
 

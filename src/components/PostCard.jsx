@@ -1,32 +1,32 @@
+
 import {
-  Stack,
+
   Editable,
   EditableInput,
   EditablePreview,
-  Image, Text, EditableTextarea
+  Image, Text, EditableTextarea, Stack
 } from '@chakra-ui/react'
 import { Resizable } from 're-resizable'
-import React, { useEffect, useState } from 'react'
-import { useAuth } from '../hooks/useAuth'
+import React, { useEffect } from 'react'
 import useGeneralSettings from '../hooks/useGeneralSettings'
 import { useUserProvider } from '../hooks/useUserProvider'
 
 const PostCard = ({ postCard }) => {
   const { state } = useGeneralSettings()
   const { user } = useUserProvider()
-  const { auth } = useAuth()
 
   return (
 
     <Stack
       ref={postCard}
       borderRadius="md"
+      style={{ aspectRatio: '1/1' }}
       minH={user.sizeImage.h}
       maxH={user.sizeImage.h}
       maxW={user.sizeImage.w}
       minW={user.sizeImage.w}
       bgColor={state.bgColor}
-      padding={'3rem'}
+      padding={'2rem 4rem 1rem'}
       position='relative'
 
     >
@@ -65,12 +65,12 @@ const PostCard = ({ postCard }) => {
       {
         user.image.src
 
-          ? (<Resizable>
-            <figure style={{ minWidth: '100%', width: '100%', minHeight: '100%' }} className={user.image.filter}>
+          ? (<Stack>
+            <figure className={user.image.filter}>
               <Image
                 src={user.image.src} minW='100%' minHeight={'100%'} alt={user.image.src} />
             </figure>
-          </Resizable>)
+          </Stack>)
           : null
       }
 
