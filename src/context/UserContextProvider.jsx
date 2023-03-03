@@ -15,7 +15,10 @@ const UserContextProvider = ({ children }) => {
       h: 650,
       name: 'default'
     },
-    code: true
+    code: true,
+    position: {
+      top: '', bottom: '', left: '', right: ''
+    }
   })
 
   return (

@@ -58,7 +58,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
           <h2>
             <AccordionButton>
               <Box as="span" flex='1' textAlign='left'>
-                User Settings
+                Watermark
               </Box>
               <AccordionIcon />
             </AccordionButton>
