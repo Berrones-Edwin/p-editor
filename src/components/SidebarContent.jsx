@@ -15,7 +15,7 @@ import {
 import useGeneralSettings from '../hooks/useGeneralSettings'
 import { SIZES } from '../constants/sizes'
 import GeneralSettingsForm from './GeneralSettingsForm'
-import UserSettingsForm from './userSettingsForm'
+import UserSettingsForm from './UserSettingsForm'
 
 const SidebarContent = ({ onClose, ...rest }) => {
   return (

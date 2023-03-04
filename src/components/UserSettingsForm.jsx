@@ -4,7 +4,15 @@ import {
   Stack,
   FormControl,
   FormLabel,
-  Input, Switch, Accordion, AccordionItem, AccordionButton, AccordionIcon, Box, AccordionPanel, Select
+  Input,
+  Switch,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionIcon,
+  Box,
+  AccordionPanel,
+  Select
 } from '@chakra-ui/react'
 import { useUserProvider } from '../hooks/useUserProvider'
 import { uploadService } from '../services/uploadImage'
