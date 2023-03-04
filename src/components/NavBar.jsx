@@ -107,35 +107,19 @@ export default function NavBar ({ postCard }) {
       return
     }
 
-    if (auth !== null) {
-      uploadImage({ uid: auth?.user?.uid })
-    } else if (auth === null || window.localStorage.getItem('auth') === null) {
-      loginWithGoogle().then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result)
-        const token = credential.accessToken
-        // The signed-in user info.
-        const user = result.user
-        // IdP data available using getAdditionalUserInfo(result)
-
-        window.localStorage.setItem('auth', JSON.stringify({ token, user }))
-        uploadImage({ uid: user.uid })
-        setAuth({
-          token,
-          user
-        })
-        // ...
-      }).catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code
-        const errorMessage = error.message
-        // The email of the user's account used.
-        const email = error.customData.email
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error)
-        // ...
+    if (auth === null || window.localStorage.getItem('auth') === null) {
+      toast({
+        title: 'Error.',
+        description: "You'd sign in.",
+        status: 'error',
+        duration: 9000,
+        isClosable: true
       })
+
+      return
     }
+
+    uploadImage({ uid: auth?.user?.uid })
   }, [postCard])
 
   const handleLogout = async () => {
@@ -147,6 +131,33 @@ export default function NavBar ({ postCard }) {
     loadImages({ uid: auth.user.uid }).then((data) => {
       setImages(data)
       onOpen()
+    })
+  }
+  const handleLogIn = () => {
+    loginWithGoogle().then((result) => {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result)
+      const token = credential.accessToken
+      // The signed-in user info.
+      const user = result.user
+      // IdP data available using getAdditionalUserInfo(result)
+
+      window.localStorage.setItem('auth', JSON.stringify({ token, user }))
+
+      setAuth({
+        token,
+        user
+      })
+      // ...
+    }).catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code
+      const errorMessage = error.message
+      // The email of the user's account used.
+      const email = error.customData.email
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error)
+      // ...
     })
   }
 
@@ -193,7 +204,20 @@ export default function NavBar ({ postCard }) {
                         <MenuItem onClick={handleLogout} icon={<FaSignOutAlt />}>logout</MenuItem>
                       </MenuList>
                     </Menu>)
-                  : null
+                  : (<Menu>
+                    <MenuButton
+                      as={Button}
+                      rounded={'full'}
+                      variant={'link'}
+                      cursor={'pointer'}
+                      minW={0}
+                      onClick={handleLogIn}
+
+                    >
+                      Sign in
+                    </MenuButton>
+
+                  </Menu>)
               }
 
             </Stack>
