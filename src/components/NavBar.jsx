@@ -49,8 +49,6 @@ export default function NavBar ({ postCard }) {
           if (data) {
             // save reference on firebase public_id
 
-            // const data = JSON.parse(localStorage.getItem('auth'))
-
             await saveImages({ imageUrl: data.public_id, uid })
             await toast({
               title: 'Image uploaded.',
@@ -109,9 +107,9 @@ export default function NavBar ({ postCard }) {
       return
     }
 
-    if (auth?.user?.uid) {
+    if (auth !== null) {
       uploadImage({ uid: auth?.user?.uid })
-    } else if (!auth) {
+    } else if (auth === null || window.localStorage.getItem('auth') === null) {
       loginWithGoogle().then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result)
@@ -120,7 +118,7 @@ export default function NavBar ({ postCard }) {
         const user = result.user
         // IdP data available using getAdditionalUserInfo(result)
 
-        localStorage.setItem('auth', JSON.stringify({ token, user }))
+        window.localStorage.setItem('auth', JSON.stringify({ token, user }))
         uploadImage({ uid: user.uid })
         setAuth({
           token,
