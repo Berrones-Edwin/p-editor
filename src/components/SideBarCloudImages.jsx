@@ -19,7 +19,7 @@ const SideBarCloudImages = ({ onClose, isOpen, images }) => {
             <DrawerOverlay />
             <DrawerContent>
                 <DrawerCloseButton />
-                <DrawerHeader>My Cloud <button>Reload</button></DrawerHeader>
+                <DrawerHeader>My Cloud</DrawerHeader>
 
                 <DrawerBody>
                     <Stack display={'flex'} justifyContent='center' alignItems={'center'} gap='2' flexDir='row' flexWrap={'wrap'}

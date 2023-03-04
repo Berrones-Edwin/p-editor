@@ -8,6 +8,7 @@ export const loginWithGoogle = () => {
 }
 
 export const logout = () => {
-  localStorage.removeItem('auth')
+  localStorage.clear()
+  localStorage.setItem('chakra-ui-color-mode', 'dark')
   return signOut(auth)
 }

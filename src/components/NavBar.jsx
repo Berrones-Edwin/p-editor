@@ -36,7 +36,7 @@ export default function NavBar ({ postCard }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [images, setImages] = useState(null)
 
-  const uploadImage = () => {
+  const uploadImage = ({ uid }) => {
     toPng(postCard.current, { cacheBust: true })
       .then((dataUrl) => {
         // create Images
@@ -49,8 +49,10 @@ export default function NavBar ({ postCard }) {
           if (data) {
             // save reference on firebase public_id
 
-            await saveImages({ imageUrl: data.public_id, uid: auth?.user?.uid })
-            toast({
+            // const data = JSON.parse(localStorage.getItem('auth'))
+
+            await saveImages({ imageUrl: data.public_id, uid })
+            await toast({
               title: 'Image uploaded.',
               description: "We've uploaded your image for you.",
               status: 'success',
@@ -107,9 +109,9 @@ export default function NavBar ({ postCard }) {
       return
     }
 
-    if (auth) {
-      uploadImage()
-    } else {
+    if (auth?.user?.uid) {
+      uploadImage({ uid: auth?.user?.uid })
+    } else if (!auth) {
       loginWithGoogle().then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result)
@@ -119,12 +121,11 @@ export default function NavBar ({ postCard }) {
         // IdP data available using getAdditionalUserInfo(result)
 
         localStorage.setItem('auth', JSON.stringify({ token, user }))
+        uploadImage({ uid: user.uid })
         setAuth({
           token,
           user
         })
-        setTimeout(() => uploadImage(), 500)
-
         // ...
       }).catch((error) => {
         // Handle Errors here.
@@ -139,8 +140,8 @@ export default function NavBar ({ postCard }) {
     }
   }, [postCard])
 
-  const handleLogout = () => {
-    logout()
+  const handleLogout = async () => {
+    await logout()
     setAuth(null)
   }
 
@@ -177,23 +178,23 @@ export default function NavBar ({ postCard }) {
                 auth?.user
                   ? (
 
-                <Menu>
-                  <MenuButton
-                    as={Button}
-                    rounded={'full'}
-                    variant={'link'}
-                    cursor={'pointer'}
-                    minW={0}>
-                    <Avatar
-                      size={'sm'}
-                      src={auth.user.photoURL}
-                    />
-                  </MenuButton>
-                  <MenuList>
-                    <MenuItem onClick={handleOpenSideBar} icon={<FaThList />}>My images</MenuItem>
-                    <MenuItem onClick={handleLogout} icon={<FaSignOutAlt />}>logout</MenuItem>
-                  </MenuList>
-                </Menu>)
+                    <Menu>
+                      <MenuButton
+                        as={Button}
+                        rounded={'full'}
+                        variant={'link'}
+                        cursor={'pointer'}
+                        minW={0}>
+                        <Avatar
+                          size={'sm'}
+                          src={auth.user.photoURL}
+                        />
+                      </MenuButton>
+                      <MenuList>
+                        <MenuItem onClick={handleOpenSideBar} icon={<FaThList />}>My images</MenuItem>
+                        <MenuItem onClick={handleLogout} icon={<FaSignOutAlt />}>logout</MenuItem>
+                      </MenuList>
+                    </Menu>)
                   : null
               }
 
