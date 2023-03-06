@@ -13,6 +13,8 @@
     "@chakra-ui/icons": "^2.0.17",
     "@chakra-ui/react": "^2.5.1",
     "@cloudinary/url-gen": "^1.9.1",
+    "@codemirror/lang-css": "^6.0.2",
+    "@codemirror/lang-html": "^6.4.2",
     "@codemirror/lang-javascript": "^6.1.4",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
