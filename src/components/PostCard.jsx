@@ -9,9 +9,10 @@ import {
 import React, { useEffect, useCallback } from 'react'
 import CodeMirror from '@uiw/react-codemirror'
 import { javascript } from '@codemirror/lang-javascript'
+import { html, htmlCompletionSourceWith } from '@codemirror/lang-html'
+import { css } from '@codemirror/lang-css'
 import useGeneralSettings from '../hooks/useGeneralSettings'
 import { useUserProvider } from '../hooks/useUserProvider'
-import { darcula } from '@uiw/codemirror-theme-darcula'
 
 const PostCard = ({ postCard }) => {
   const { state } = useGeneralSettings()
@@ -21,6 +22,18 @@ const PostCard = ({ postCard }) => {
 
   }, [])
 
+  const extensions = user.language === 'js'
+    ? [javascript({ jsx: true })]
+    : user.language === 'css'
+      ? [css()]
+      : [html({
+          matchClosingTags: true,
+          selfClosingTags: true,
+          autoCloseTags: true
+        })]
+  const value = user.language === 'js'
+    ? " console.log('hello world!');"
+    : user.language === 'css' ? "h1 { color:'blue'} " : '<h1>hello world</h1>'
   return (
 
     <Stack
@@ -82,9 +95,9 @@ const PostCard = ({ postCard }) => {
       {
         user.code
           ? <CodeMirror
-            value="console.log('hello world!');"
+            value={value}
             height="400px"
-            extensions={[javascript({ jsx: true })]}
+            extensions={extensions}
             onChange={onChange}
             theme={'dark'}
             style={{ fontSize: '1.25rem' }}

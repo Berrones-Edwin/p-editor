@@ -18,7 +18,8 @@ const UserContextProvider = ({ children }) => {
     code: true,
     position: {
       top: '', bottom: '', left: '', right: ''
-    }
+    },
+    language: 'js'
   })
 
   return (

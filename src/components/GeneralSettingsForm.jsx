@@ -65,6 +65,28 @@ const GeneralSettingsForm = () => {
   const btnSettingsImage = useRef()
   const btnInputfile = useRef()
 
+  useEffect(() => {
+    if (allowCodeEditor) {
+      setAllowImage(false)
+      setUser({
+        ...user,
+        image: {
+          src: ''
+        }
+      })
+    }
+  }, [allowCodeEditor])
+
+  useEffect(() => {
+    if (allowImage) {
+      setAllowCodeEditor(false)
+      setUser({
+        ...user,
+        code: false
+      })
+    }
+  }, [allowImage])
+
   const handleInputChange = (e) => {
     dispatch({
       type: nameInputs[e.target.name],
@@ -97,27 +119,12 @@ const GeneralSettingsForm = () => {
     })
   }
 
-  useEffect(() => {
-    if (allowCodeEditor) {
-      setAllowImage(false)
-      setUser({
-        ...user,
-        image: {
-          src: ''
-        }
-      })
-    }
-  }, [allowCodeEditor])
-
-  useEffect(() => {
-    if (allowImage) {
-      setAllowCodeEditor(false)
-      setUser({
-        ...user,
-        code: false
-      })
-    }
-  }, [allowImage])
+  const handleLanguage = (e) => {
+    setUser({
+      ...user,
+      language: e.target.value
+    })
+  }
 
   return (
     <>
@@ -225,11 +232,18 @@ const GeneralSettingsForm = () => {
 
           </FormControl>
 
-          <FormControl display='flex' alignItems='center'>
+          <FormControl mb='1rem' display='flex' alignItems='center'>
             <FormLabel htmlFor='allow-code.editor' mb='0' >
               Add Editor
             </FormLabel>
             <Switch id='allow-code.editor' isChecked={allowCodeEditor} onChange={handleAllowCodeEditor} />
+          </FormControl>
+          <FormControl hidden={!allowCodeEditor}>
+            <Select name="language" onChange={handleLanguage}>
+              <option defaultValue value="js">JavaScript</option>
+              <option value="css">CSS</option>
+              <option value="html">HTML</option>
+            </Select>
           </FormControl>
         </form>
       </Stack>
